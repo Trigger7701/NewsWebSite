@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+{% block content %}
+		<h1>Bosh sahifa</h1>
+
+		<ul type="circle">
+			<div class = 'container'>
+				{% for new in news %}
+			<li>
+				<div class = 'panel'>
+					<a href="{{new.id}}"><h2>{{ new.theme }}</h2></a>
+					<img class="pic" src="{{new.imageURL}}">
+					<p>{{ new.text }}</p>
+
+				<a href="#">#{{new.tag}}</a>
+				</div>
+			</li>
+			{% endfor %}
+			</div>
+
+		</ul>
+{% endblock %}

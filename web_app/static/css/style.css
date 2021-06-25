@@ -1,0 +1,20 @@
+.panel{
+	box-shadow: 1px 1px 4px 3px gray;
+	padding: 2%;
+	margin: 15px;
+	width: 80%;
+	border-radius: 10px;
+	position: relative;
+
+}
+.panel:hover{
+	box-shadow: 1px 3px 4px 3px gray;
+}
+.container li{
+	list-style: none;
+} 
+.pic{
+	width: 100%;
+	height: auto;
+
+}
