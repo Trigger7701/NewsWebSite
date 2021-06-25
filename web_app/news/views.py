@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import News
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect
 from .forms import *
+from .decorator import *
 def index(request):
     news = News.objects.all()
     context = {
@@ -19,14 +21,14 @@ def new_by_id(request,id):
     return render(request,'one_new.html',context)
 def about(request):
     return HttpResponse('Biz haqimizda..')
-
 def politics(request):
     news = News.objects.filter(tag='siyosat')
     context = {
         'news':news
     }
     return render(request,'index.html',context)
-
+@login_required(login_url='login')
+@allowed_users(allowed=['admins,editors'])
 def by_tag(request,tag):
     news = News.objects.filter(tag=tag)
     context = {
@@ -35,7 +37,7 @@ def by_tag(request,tag):
     return render(request,'index.html',context)
 def about(request):
     return HttpResponse('Biz haqimizda..')
-
+@login_required(login_url='login')
 def add_news(request):
     form = AddNews()
     theme = request.POST.get('theme')
@@ -52,6 +54,7 @@ def add_news(request):
         'form':form
     }
     return render(request,'add_news.html',context)
+# @login_required(login_url='login')
 def post_news(request):
     form = PostNews()
     form = PostNews(request.POST,request.FILES)
@@ -83,6 +86,7 @@ def regestrationView(request):
         'form':form
     }
     return render(request,'regestration.html',context)
+@authenticated
 def log_in(request):
     form = LoginForm()
     username = request.POST.get('username')
