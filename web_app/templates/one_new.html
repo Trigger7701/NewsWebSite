@@ -11,8 +11,11 @@
 					<p>{{ new.text }}</p>
 
 				<a href="#">#{{new.tag}}</a><br>
-				<img src="{% static 'icons/like.png' %}" style="cursor:pointer;" onclick="like({{request.user.id}},{{new.id}})" >
-				<img src="{% static 'icons/like.png' %}" style="transform:rotate(180deg); cursor:pointer;">
+				<img src="{% static 'icons/view.png' %}" style="cursor:pointer;"><p>{{new.views}}</p>
+				<img src="{% static 'icons/like.png' %}" style="cursor:pointer;" onclick="like({{new.id}},'like')" ><p id="idlike">
+					{{new.like}}</p>
+				<img src="{% static 'icons/like.png' %}" style="transform:rotate(180deg); cursor:pointer;" onclick="like({{new.id}},'dis_like')"><p id="iddislike">
+					{{new.dis_like}}</p>
 				</div>
 			</li>
 			</div>

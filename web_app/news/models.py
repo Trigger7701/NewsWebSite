@@ -12,6 +12,9 @@ class News(models.Model):
     tag = models.CharField(max_length=50,null=True)
     image = models.ImageField(null=True)
     added_date = models.DateTimeField(auto_now_add=True)
+    like = models.IntegerField(default=0)
+    dis_like = models.IntegerField(default=0)
+    views = models.IntegerField(default=0)
     @property
     def imageURL(self):
         try:
@@ -20,6 +23,21 @@ class News(models.Model):
             return ''
     def __str__(self):
         return self.theme
+    @property
+    def add_like(self):
+        self.like += 1
+    @property
+    def add_dis_like(self):
+        self.dis_like += 1
+    @property
+    def sub_like(self):
+        self.like -= 1
+    @property
+    def sub_dis_like(self):
+        self.dis_like -= 1
+    @property
+    def add_view(self):
+        self.views += 1
 
 class Comment(models.Model):
     new = models.ForeignKey(News,on_delete=models.CASCADE)
@@ -28,4 +46,4 @@ class Comment(models.Model):
 class Like_Dislike(models.Model):
     new = models.ForeignKey(News,on_delete=models.CASCADE)
     user = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    like_dislike = models.BooleanField(default=False)
+    like_dislike = models.BooleanField(null=True)

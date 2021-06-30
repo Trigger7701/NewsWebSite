@@ -1,18 +1,24 @@
-function like(user_id,new_id) {
-	url = '127.0.0.1:8000/like_dislike/'
+function like(new_id,action) {
+	url = '/like_dislike/'
 	fetch(url,{
     method:'POST',
     headers:{
         'Content-Type':'application/json',
         'X-CSRFToken':csrftoken,
     },
-    body:JSON.stringify({'user_id':user_id,'new_id':new_id})
+    body:JSON.stringify({'new_id':new_id,'action':action})
     })
     .then((response)=>{
-    console.log(response.json())
+    response.json().then((data) => {
+        console.log(data.like,data.dis_like)
+        document.getElementById('idlike').innerHTML = data.like
+        document.getElementById('iddislike').innerHTML = data.dis_like
+       })
     })
     // .then((data)=>{
     // location.reload()
     // })
 
-}	
+}
+
+

@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect
 from .forms import *
 from .decorator import *
+import json
 def index(request):
     news = News.objects.all()
     context = {
@@ -14,6 +15,8 @@ def index(request):
     return render(request,'index.html',context)
 def new_by_id(request,id):
     new = News.objects.get(id=id)
+    new.add_view
+    new.save()
     comments = Comment.objects.filter(new=new)
     form = CommentForm()
     if request.POST:
@@ -118,5 +121,32 @@ def log_out(request):
         logout(request)
     return redirect('login')
 def like_dislike(request):
-    print(request.POST)
-    return JsonResponse({'status':'ishladi..'})
+    data = json.loads(request.body)
+    if data['action']=='like':
+        new  = News.objects.get(id=data['new_id'])
+        pr = Profile.objects.get(user=request.user)
+        ld,created = Like_Dislike.objects.get_or_create(new=new,user=pr)
+        print(created)
+        if ld.like_dislike == False:
+            new.add_like
+            new.sub_dis_like
+            ld.like_dislike = True
+        elif ld.like_dislike == None:
+            new.add_like
+            ld.like_dislike = True
+    elif data['action']=='dis_like':
+        new = News.objects.get(id=data['new_id'])
+        pr = Profile.objects.get(user=request.user)
+        ld, created = Like_Dislike.objects.get_or_create(new=new, user=pr)
+        print(created)
+        if ld.like_dislike == True:
+            new.sub_like
+            new.add_dis_like
+            ld.like_dislike = False
+        elif ld.like_dislike == None:
+            new.add_dis_like
+            ld.like_dislike = False
+    new.save()
+    ld.save()
+    print(ld.like_dislike)
+    return JsonResponse({'like':new.like,'dis_like':new.dis_like})
