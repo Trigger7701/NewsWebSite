@@ -12,4 +12,5 @@ urlpatterns = [
     path('regestration/', regestrationView, name='regestration'),
     path('login/', log_in, name='login'),
     path('logout/', log_out, name='logout'),
+    path('like_dislike/', like_dislike, name='like_dislike'),
 ]

@@ -13,6 +13,8 @@ class PostNews(forms.ModelForm):
     class Meta:
         model = News
         fields = '__all__'
+class CommentForm(forms.Form):
+    text = forms.CharField(label='Comment',max_length=2000)
 class ProfileForm(UserCreationForm):
     class Meta:
         model = User

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from .models import News
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
@@ -14,9 +14,20 @@ def index(request):
     return render(request,'index.html',context)
 def new_by_id(request,id):
     new = News.objects.get(id=id)
-    print(new.text)
+    comments = Comment.objects.filter(new=new)
+    form = CommentForm()
+    if request.POST:
+        profile = Profile.objects.get(user = request.user)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            text = request.POST.get('text')
+            print(text)
+            comment = Comment.objects.create(new=new, user=profile, text=text)
+            comment.save()
     context = {
-        'new':new
+        'form':form,
+        'new':new,
+        'comments':comments
     }
     return render(request,'one_new.html',context)
 def about(request):
@@ -80,6 +91,8 @@ def regestrationView(request):
         password = request.POST.get('password1')
         user = authenticate(request=request,username=username,password=password)
         if user:
+            profile = Profile.objects.create(user = user)
+            profile.save()
             login(request,user)
             return redirect('index')
     context = {
@@ -104,3 +117,6 @@ def log_out(request):
     if user:
         logout(request)
     return redirect('login')
+def like_dislike(request):
+    print(request.POST)
+    return JsonResponse({'status':'ishladi..'})

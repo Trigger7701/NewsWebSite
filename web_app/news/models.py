@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     phone = models.CharField(null=True,max_length=20)
+    def __str__(self):
+        return self.user.username
 
 class News(models.Model):
     theme = models.CharField(max_length=300,null=True)
@@ -18,3 +20,12 @@ class News(models.Model):
             return ''
     def __str__(self):
         return self.theme
+
+class Comment(models.Model):
+    new = models.ForeignKey(News,on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile,on_delete=models.SET_NULL,null=True)
+    text = models.CharField(max_length=2000,null=True)
+class Like_Dislike(models.Model):
+    new = models.ForeignKey(News,on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    like_dislike = models.BooleanField(default=False)

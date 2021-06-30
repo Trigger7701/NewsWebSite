@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% block content %}
+{% load static %}
 		<h1>Bosh sahifa</h1>
-
 		<ul type="circle">
 			<div class = 'container'>
 			<li>
@@ -10,7 +10,37 @@
 					<img class="pic" src="{{new.imageURL}}">
 					<p>{{ new.text }}</p>
 
-				<a href="#">#{{new.tag}}</a>
+				<a href="#">#{{new.tag}}</a><br>
+				<img src="{% static 'icons/like.png' %}" style="cursor:pointer;" onclick="like({{request.user.id}},{{new.id}})" >
+				<img src="{% static 'icons/like.png' %}" style="transform:rotate(180deg); cursor:pointer;">
+				</div>
+			</li>
+			</div>
+			{% for comment in comments %}
+			<div class = 'container'>
+			<li>
+				<div class = 'panel'>
+					<h2>{{comment.user.user.first_name}}</h2>
+					<p>{{ comment.text }}</p>
+				</div>
+			</li>
+			</div>
+			{% endfor %}
+			<div class = 'container'>
+			<li>
+				<div class = 'panel'>
+					{% if request.user.username %}
+					<form action="" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						  <div class="form-group">
+							<label>Izoh</label>
+							<textarea name="text" class="form-control" placeholder="Izoh qoldirish..."></textarea>
+						  </div>
+						  <button type="submit" class="btn btn-primary">Izoh</button>
+					</form>
+					{% else %}
+					<h3>Izoh qoldirish uchun <a href="{% url 'regestration' %}">ro'yhat</a>dan o'tish yoki <a href="{% url 'login' %}">tizimga kirish</a> kerak!!!</h3>
+					{% endif %}
 				</div>
 			</li>
 			</div>
