@@ -47,3 +47,4 @@ class Like_Dislike(models.Model):
     new = models.ForeignKey(News,on_delete=models.CASCADE)
     user = models.ForeignKey(Profile,on_delete=models.CASCADE)
     like_dislike = models.BooleanField(null=True)
+

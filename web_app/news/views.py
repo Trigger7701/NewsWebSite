@@ -150,3 +150,10 @@ def like_dislike(request):
     ld.save()
     print(ld.like_dislike)
     return JsonResponse({'like':new.like,'dis_like':new.dis_like})
+def favourites(request):
+    pr = Profile.objects.get(user=request.user)
+    lds = Like_Dislike.objects.filter(user=pr)
+    lds = lds.filter(like_dislike=True)
+    for ld in lds:
+        print(ld.new.text)
+    return HttpResponse('Ishladi')
